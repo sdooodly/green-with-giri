@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import type { Product, Badge } from '@/types';
 import { formatINR } from '@/lib/format';
 import { useCartStore } from '@/store/cart';
@@ -23,12 +22,11 @@ export function PlantCard({ product }: { product: Product }) {
       {/* Image */}
       <div className="relative aspect-[4/5] bg-parchment-dark overflow-hidden">
         {product.imageUrl ? (
-          <Image
+          <img
             src={product.imageUrl}
             alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">

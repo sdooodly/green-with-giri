@@ -4,63 +4,12 @@ import { useCartStore } from '@/store/cart';
 import { formatINR } from '@/lib/format';
 
 export function CartDrawer() {
-  const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
 
-  const handleCheckout = async () => {
-    try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: items.map((i) => ({ productId: i.product.id, quantity: i.quantity })),
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!data.orderId) {
-        alert('Failed to create order. Please try again.');
-        return;
-      }
-
-      // Open Razorpay checkout
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: data.amount,
-        currency: 'INR',
-        name: 'Green with Giri',
-        description: 'Botanical order',
-        order_id: data.orderId,
-        handler: async function (response: {
-          razorpay_order_id: string;
-          razorpay_payment_id: string;
-          razorpay_signature: string;
-        }) {
-          // Verify payment on server
-          await fetch('/api/verify-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(response),
-          });
-          clearCart();
-          alert('Payment successful! Your plants are on their way 🌿');
-        },
-        prefill: {
-          name: '',
-          email: '',
-          contact: '',
-        },
-        theme: {
-          color: '#1a3a2a',
-        },
-      };
-
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
-    } catch (err) {
-      console.error('Checkout error:', err);
-      alert('Something went wrong. Please try again.');
-    }
+  const handleCheckout = () => {
+    // Static site (GitHub Pages) — no backend available.
+    // When you move to Docker/VPS deployment, replace this with Razorpay integration.
+    alert('🌿 Checkout coming soon!\n\nThis is a static demo. Payment processing requires the full Docker deployment.\nSee README for setup instructions.');
   };
 
   return (
@@ -90,10 +39,14 @@ export function CartDrawer() {
         ) : (
           items.map((item) => (
             <div key={item.product.id} className="flex gap-4 p-3 bg-parchment rounded-lg">
-              <div className="w-16 h-16 bg-parchment-dark rounded flex items-center justify-center shrink-0">
-                <svg className="text-moss-light/40" width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                  <path d="M24 8c-4 4-8 10-8 18 0 6 3.5 10 8 10s8-4 8-10c0-8-4-14-8-18z" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                </svg>
+              <div className="w-16 h-16 bg-parchment-dark rounded flex items-center justify-center shrink-0 overflow-hidden">
+                {item.product.imageUrl ? (
+                  <img src={item.product.imageUrl} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <svg className="text-moss-light/40" width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                    <path d="M24 8c-4 4-8 10-8 18 0 6 3.5 10 8 10s8-4 8-10c0-8-4-14-8-18z" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                  </svg>
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-serif text-sm font-semibold text-forest truncate">{item.product.name}</h3>
@@ -143,9 +96,6 @@ export function CartDrawer() {
           </button>
         </div>
       )}
-
-      {/* Razorpay script */}
-      <script src="https://checkout.razorpay.com/v1/checkout.js" async />
     </aside>
   );
 }

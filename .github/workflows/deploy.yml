@@ -1,8 +1,11 @@
-name: Build & Deploy
+name: Build & Deploy (Docker/VPS)
 
+# Disabled for now — using GitHub Pages instead.
+# Uncomment the trigger below when ready for production Docker deployment.
 on:
-  push:
-    branches: [main]
+  workflow_dispatch: # Manual trigger only
+  # push:
+  #   branches: [main]
 
 env:
   REGISTRY: ghcr.io
@@ -55,14 +58,14 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # Pull latest image from GHCR
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            # Pull latest image from GHCR (private repo — uses a PAT or GITHUB_TOKEN)
+            echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ghcr.io/${{ github.repository }}:latest
 
             # Restart the container
-            cd /opt/verdant-hearth
+            cd /opt/green-with-giri
             docker compose down
-            docker compose up -d
+            docker compose up -d --pull always
 
             # Run migrations
             docker compose exec -T app npx prisma db push
