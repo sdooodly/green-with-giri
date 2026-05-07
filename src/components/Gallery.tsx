@@ -24,9 +24,11 @@ export function Gallery() {
               role="listitem"
               className="break-inside-avoid mb-4 rounded-lg overflow-hidden relative group"
             >
-              {/* Placeholder image */}
-              <div
-                className={`${heightMap[item.height]} w-full bg-gradient-to-br from-moss/[0.12] to-terracotta/[0.08] bg-parchment-dark`}
+              <img
+                src={item.imageUrl}
+                alt={`${item.caption} by ${item.username}`}
+                loading="lazy"
+                className={`${heightMap[item.height]} w-full object-cover`}
               />
 
               {/* Hover caption */}

@@ -14,35 +14,7 @@ A high-fidelity e-commerce landing page for a botanical boutique, built with a f
 | Auth | [NextAuth.js](https://next-auth.js.org/) |
 | Deployment | Docker + GitHub Actions → Any VPS |
 
-## Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Generate Prisma client
-npx prisma generate
-
-# Copy environment variables
-cp .env.example .env
-# Fill in your Razorpay keys and DB URL
-
-# Run development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## Deployment
-
-Push to `main` triggers the GitHub Actions pipeline:
-1. Lint & build check
-2. Docker image built and pushed to GHCR
-3. SSH deploy to your VPS
-
-See `.github/workflows/deploy.yml` for configuration.
-
-## Image Credits
+## Placeholder Image Credits
 
 Plant photographs are sourced from [Unsplash](https://unsplash.com/) and used under the [Unsplash License](https://unsplash.com/license) (free for commercial and non-commercial use, no attribution required but appreciated).
 
@@ -56,8 +28,6 @@ Photos by:
 - [Kaufmann Mercantile](https://unsplash.com/@kaufmann_mercantile) — Rubber plant, dark foliage
 - [Linh Le](https://unsplash.com/@linhle) — ZZ plant, minimal pots
 
-All images are served via the Unsplash CDN (`images.unsplash.com`). In production, replace with your own product photography.
+All images are served via the Unsplash CDN (`images.unsplash.com`).
 
-## License
 
-Private repository. All rights reserved.

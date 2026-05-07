@@ -35,6 +35,9 @@ const config: Config = {
         serif: ['Lora', 'Georgia', 'serif'],
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
+      transitionDuration: {
+        '600': '600ms',
+      },
     },
   },
   plugins: [],
